@@ -2,6 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.7.5'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 	id 'java'
+	id 'jacoco'
 }
 
 group = 'pk.training.basit'
@@ -19,4 +20,15 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+// This configuration sets the minimum code coverage to 20%.
+jacocoTestCoverageVerification {
+    violationRules { 
+        rule { 
+            limit { 
+                minimum = 0.2 
+            } 
+        } 
+    } 
 }

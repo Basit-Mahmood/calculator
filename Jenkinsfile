@@ -13,5 +13,17 @@ pipeline {
                 bat 'gradlew test' 
             } 
         } 
+		// This stage copies the generated JaCoCo report to the Jenkins output.
+		stage('Code coverage') { 
+            steps { 
+                bat 'gradlew jacocoTestReport'
+				publishHTML (target: [
+					reportDir: 'build/reports/jacoco/test/html',
+					reportFiles: 'index.html',
+					reportName: "JaCoCo Report"
+				])
+                bat 'gradlew jacocoTestCoverageVerification' 
+            } 
+        } 
     } 
 } 
