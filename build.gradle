@@ -33,3 +33,8 @@ jacocoTestCoverageVerification {
         } 
     } 
 }
+
+checkstyle {
+    configFile = file("${rootDir}/config/checkstyle/checkstyle.xml")
+    toolVersion = '10.0'             // set Checkstyle version here. This version is for java.version >= 11
+}
