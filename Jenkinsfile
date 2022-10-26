@@ -24,6 +24,17 @@ pipeline {
 				])
                 bat 'gradlew jacocoTestCoverageVerification' 
             } 
-        } 
+        }
+		// This stage copies the generated checkstyle report to the Jenkins output.
+		stage('Static code analysis') { 
+			steps { 
+				bat 'gradlew checkstyleMain'
+				publishHTML (target: [
+					reportDir: 'build/reports/checkstyle/',
+					reportFiles: 'main.html',
+					reportName: "Checkstyle Report"
+				])
+            } 
+        }
     } 
 } 
