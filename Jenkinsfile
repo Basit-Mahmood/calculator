@@ -1,5 +1,9 @@
 pipeline { 
-    agent any 
+    agent any
+	// Automatically triggers the build in every minute. pollSCM() check the github frequently. If there are any commit(s). It will trigger the Jenkins build automatically
+	//triggers {
+        //pollSCM('* * * * *')
+    //}
     stages { 
         stage('Compile') { 
             steps { 
@@ -36,5 +40,14 @@ pipeline {
 				])
             } 
         }
-    } 
+    }
+	// All notifications are usually called in the post section of the pipeline, which is executed after all steps, no matter whether the build succeeded 
+	// or failed. We used the always keyword; however, there are different options (always, changed, fixed etc etc)
+	post {
+		always {
+			mail to: 'basit.mahmood2@gmail.com',
+			subject: "Completed Pipeline: ${currentBuild.fullDisplayName}",
+			body: "Your build completed, please check: ${env.BUILD_URL}"
+		}
+	}
 } 
