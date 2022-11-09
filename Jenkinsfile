@@ -40,6 +40,19 @@ pipeline {
 				])
             } 
         }
+		// package application to JAR file
+		stage("Package") {
+            steps {
+                bat 'gradlew build'
+            }
+        }
+		// To push an image to a private registry and not the central Docker registry you must tag it with the registry hostname and port 
+		// To tag a local image with name "calculator" into the private registry localhost:5000 use the -t flag
+		stage("Docker build") {
+            steps {
+                bat "docker build -t localhost:5000/calculator ."
+            }
+        }
     }
 	// All notifications are usually called in the post section of the pipeline, which is executed after all steps, no matter whether the build succeeded 
 	// or failed. We used the always keyword; however, there are different options (always, changed, fixed etc etc)
