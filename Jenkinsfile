@@ -41,16 +41,23 @@ pipeline {
             } 
         }
 		// package application to JAR file
-		stage("Package") {
+		stage('Package') {
             steps {
                 bat 'gradlew build'
             }
         }
 		// To push an image to a private registry and not the central Docker registry you must tag it with the registry hostname and port 
 		// To tag a local image with name "calculator" into the private registry localhost:5000 use the -t flag
-		stage("Docker build") {
+		stage('Docker build') {
             steps {
                 bat "docker build -t localhost:5000/calculator ."
+            }
+        }
+		// Now, we can store the image in the registry using the push command
+		// Note that there is no need to specify the registry address because Docker uses the naming convention to resolve it. 
+		stage('Docker push') {
+            steps {
+                bat 'docker push localhost:5000/calculator'
             }
         }
     }
