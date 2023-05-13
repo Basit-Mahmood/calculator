@@ -1,5 +1,5 @@
 plugins {
-	id 'org.springframework.boot' version '2.7.5'
+	id 'org.springframework.boot' version '2.7.11'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 	id 'java'
 	id 'jacoco'
@@ -17,10 +17,19 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation("io.cucumber:cucumber-java:7.12.0") 
+	testImplementation("io.cucumber:cucumber-junit:7.12.0")
+}
+
+// This splits the tests into unit tests (run with ./gradlew test) and acceptance tests (run with ./gradlew acceptanceTest).
+tasks.register('acceptanceTest', Test) { 
+	include '**/acceptance/**' 
+	systemProperties System.getProperties() 
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
+	exclude '**/acceptance/**'
 }
 
 // This configuration sets the minimum code coverage to 20%.
